@@ -302,6 +302,15 @@ function c4d_rcd_form_eck__entity__form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function c4d_rcd_form_eck__entity__delete_form_alter(&$form, &$form_state, $form_id) {
+  // We need the cancel button of entity delete forms to close the modal when
+  // form being displayed in a ctools modal.
+  $form['actions']['cancel']['#attributes']['class'][] = 'ctools-close-modal';
+}
+
+/**
  * Implements hook_entity_presave().
  */
 function c4d_rcd_entity_presave($entity, $type) {
