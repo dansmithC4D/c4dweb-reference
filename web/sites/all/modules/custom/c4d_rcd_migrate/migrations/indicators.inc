@@ -35,9 +35,9 @@ class C4DRcdIndicatorMigration extends C4DRcdBaseMigration {
     $this->addFieldMapping('field_rcd_result', 'id_result')->sourceMigration(['C4DRcdResult', 'C4DRcdImpact']);
     $this->addFieldMapping('field_rcd_unit', 'unit');
     $this->addFieldMapping('field_rcd_additional_information', 'definition');
-    $this->addFieldMapping('field_rcd_additional_information:format', NULL, FALSE)->defaultValue('full_html');
+    $this->addFieldMapping('field_rcd_additional_information:format', NULL, FALSE)->defaultValue('filtered_html');
     $this->addFieldMapping('field_rcd_data_source', 'data_source');
-    $this->addFieldMapping('field_rcd_data_source:format', NULL, FALSE)->defaultValue('full_html');
+    $this->addFieldMapping('field_rcd_data_source:format', NULL, FALSE)->defaultValue('filtered_html');
     $this->addFieldMapping('field_rcd_type_of_data_source', 'data_source_type');
     $this->addFieldMapping('field_rcd_diagram', 'id_sector')->sourceMigration('C4DRcdDiagram')
       ->description(t('Mapping id_sector in source to field_rcd_diagram'));
