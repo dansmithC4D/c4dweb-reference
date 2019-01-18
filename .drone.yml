@@ -58,16 +58,16 @@ pipeline:
       {{else}}
         {{repo.name}}@{{build.branch}} <{{build.link}}|failed> the upgrade test.
       {{/success}}
-
-  create-deploy-production:
-    image: fpfis/drone-plugin-github-deploy
-    state: create
-    deploy_environment: [ production ]
-    secrets: [ github_api_token ]
-    automerge: false
-    when:
-      event: push
-      branch: [feature/php7_production]
+#Disable temporary production deploys till core is updated to 7.63
+  #create-deploy-production:
+  #  image: fpfis/drone-plugin-github-deploy
+   # state: create
+   # deploy_environment: [ production ]
+   # secrets: [ github_api_token ]
+   # automerge: false
+   # when:
+   #   event: push
+   #   branch: [feature/php7_production]
   # End testing
 
   # Begin deployment
