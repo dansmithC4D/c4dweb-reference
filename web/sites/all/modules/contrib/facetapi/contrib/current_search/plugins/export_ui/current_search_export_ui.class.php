@@ -194,8 +194,8 @@ function current_search_settings_form(&$form, &$form_state) {
     '#title' => t('Search page'),
     '#options' => current_search_get_searcher_options(),
     '#description' => t('The search page this configuration will be active on.'),
-    '#default_value' => current_search_get_default_searcher(),
-    '#access' => empty($item->name),
+    '#default_value' => !empty($item->settings['searcher']) ? $item->settings['searcher'] : current_search_get_default_searcher(),
+    '#required' => TRUE,
   );
 
   // Hide the standard buttons.
@@ -526,14 +526,9 @@ function current_search_settings_form_submit($form, &$form_state) {
       $item->settings['advanced'] = $form_state['values']['advanced_settings'];
     }
   }
-  else {
-    // Saves the block visibility settings if searcher was passed.
-    if (!empty($form_state['values']['searcher'])) {
-      $name = $form_state['values']['name'];
-      $searcher = $form_state['values']['searcher'];
-      current_search_set_block_searcher($name, $searcher);
-    }
-  }
+
+  // Save the searcher.
+  $item->settings['searcher'] = $form_state['values']['searcher'];
 }
 
 /**
@@ -618,5 +613,6 @@ function current_search_get_defaults() {
     'advanced' => array(
       'empty_searches' => 0,
      ),
+     'searcher' => current_search_get_default_searcher(),
   );
 }

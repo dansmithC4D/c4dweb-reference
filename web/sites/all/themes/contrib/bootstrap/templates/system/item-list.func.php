@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Stub file for bootstrap_item_list().
@@ -34,7 +33,7 @@
  *
  * @ingroup theme_functions
  */
-function bootstrap_item_list(array $variables) {
+function bootstrap_item_list($variables) {
   $items = $variables['items'];
   $title = $variables['title'];
   $type = $variables['type'];
@@ -48,7 +47,6 @@ function bootstrap_item_list(array $variables) {
     if (is_string($title)) {
       $title = array(
         'text' => $title,
-        'html' => TRUE,
       );
     }
     // Set defaults.
@@ -59,7 +57,7 @@ function bootstrap_item_list(array $variables) {
     // Heading outputs only when it has text.
     if (!empty($title['text'])) {
       $heading .= '<' . $title['level'] . drupal_attributes($title['attributes']) . '>';
-      $heading .= empty($title['html']) ? check_plain($title['text']) : $title['text'];
+      $heading .= empty($title['html']) ? check_plain($title['text']) : _bootstrap_filter_xss($title['text']);
       $heading .= '</' . $title['level'] . '>';
     }
   }
@@ -95,13 +93,11 @@ function bootstrap_item_list(array $variables) {
               unset($item['children'][$child_key]);
             }
           }
-          $build = array(
-            '#theme' => 'item_list',
-            '#items' => $item['children'],
-            '#type' => $type,
-            '#attributes' => $child_list_attributes,
-          );
-          $value .= drupal_render($build);
+          $value .= theme('item_list', array(
+            'items' => $item['children'],
+            'type' => $type,
+            'attributes' => $child_list_attributes,
+          ));
         }
       }
       else {

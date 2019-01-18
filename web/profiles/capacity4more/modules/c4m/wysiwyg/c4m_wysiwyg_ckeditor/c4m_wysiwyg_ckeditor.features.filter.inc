@@ -15,7 +15,7 @@ function c4m_wysiwyg_ckeditor_filter_default_formats() {
   $formats['filtered_html'] = array(
     'format' => 'filtered_html',
     'name' => 'Filtered HTML',
-    'cache' => 1,
+    'cache' => 0,
     'status' => 1,
     'weight' => 0,
     'filters' => array(
@@ -181,11 +181,6 @@ iframe[allowfullscreen|allowscriptaccess|frameborder|height|scrolling|src|width]
           'filter_url_length' => 72,
         ),
       ),
-      'c4m_moodle_link_filter' => array(
-        'weight' => -48,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'iframeremove' => array(
         'weight' => -47,
         'status' => 1,
@@ -233,7 +228,6 @@ iframe[allowfullscreen|allowscriptaccess|frameborder|height|scrolling|src|width]
             39 => 'twitframe.com',
             40 => 'capacity4dev.tweetwally.com',
             41 => 'learn4dev.tweetwally.com',
-            42 => 'capacity4dev.ec.europa.eu/CrisGis',
             43 => 'new.livestream.com',
             44 => 'a.tiles.mapbox.com',
             45 => 'w.soundcloud.com',
@@ -245,35 +239,39 @@ iframe[allowfullscreen|allowscriptaccess|frameborder|height|scrolling|src|width]
             51 => 'www.elespectador.com',
             52 => 'nota.elespectador.com',
             53 => 'www.mindmeister.com',
-            54 => 'www.mindmeister.com/services/auth',
             55 => 'EUTimberRegul.tweetwally.com',
             56 => 'GlobalPFD.tweetwally.com',
             57 => 'flegt.org',
           ),
         ),
       ),
-      'media_filter' => array(
+      'c4m_wysiwyg_ckeditor_iframe_cck' => array(
         'weight' => -46,
         'status' => 1,
         'settings' => array(),
       ),
-      'filter_htmlcorrector' => array(
+      'media_filter' => array(
+        'weight' => -45,
+        'status' => 1,
+        'settings' => array(),
+      ),
+      'youtube_prevent_rel' => array(
         'weight' => -44,
         'status' => 1,
         'settings' => array(),
       ),
-      'filter_autop' => array(
+      'filter_htmlcorrector' => array(
         'weight' => -43,
         'status' => 1,
         'settings' => array(),
       ),
-      'youtube_nocookie' => array(
-        'weight' => 0,
+      'filter_autop' => array(
+        'weight' => -42,
         'status' => 1,
         'settings' => array(),
       ),
       'pathologic' => array(
-        'weight' => 50,
+        'weight' => -35,
         'status' => 1,
         'settings' => array(
           'settings_source' => 'global',
@@ -292,7 +290,7 @@ iframe[allowfullscreen|allowscriptaccess|frameborder|height|scrolling|src|width]
   $formats['full_html'] = array(
     'format' => 'full_html',
     'name' => 'Full HTML',
-    'cache' => 1,
+    'cache' => 0,
     'status' => 1,
     'weight' => 1,
     'filters' => array(
@@ -302,11 +300,6 @@ iframe[allowfullscreen|allowscriptaccess|frameborder|height|scrolling|src|width]
         'settings' => array(
           'filter_url_length' => 72,
         ),
-      ),
-      'c4m_moodle_link_filter' => array(
-        'weight' => -49,
-        'status' => 1,
-        'settings' => array(),
       ),
       'iframeremove' => array(
         'weight' => -48,
@@ -355,7 +348,6 @@ iframe[allowfullscreen|allowscriptaccess|frameborder|height|scrolling|src|width]
             39 => 'twitframe.com',
             40 => 'capacity4dev.tweetwally.com',
             41 => 'learn4dev.tweetwally.com',
-            42 => 'capacity4dev.ec.europa.eu/CrisGis',
             43 => 'new.livestream.com',
             44 => 'a.tiles.mapbox.com',
             45 => 'w.soundcloud.com',
@@ -367,30 +359,34 @@ iframe[allowfullscreen|allowscriptaccess|frameborder|height|scrolling|src|width]
             51 => 'www.elespectador.com',
             52 => 'nota.elespectador.com',
             53 => 'www.mindmeister.com',
-            54 => 'www.mindmeister.com/services/auth',
             55 => 'EUTimberRegul.tweetwally.com',
             56 => 'GlobalPFD.tweetwally.com',
             57 => 'flegt.org',
           ),
         ),
       ),
-      'media_filter' => array(
+      'c4m_wysiwyg_ckeditor_iframe_cck' => array(
         'weight' => -47,
         'status' => 1,
         'settings' => array(),
       ),
-      'filter_autop' => array(
-        'weight' => -43,
+      'media_filter' => array(
+        'weight' => -46,
         'status' => 1,
         'settings' => array(),
       ),
-      'youtube_nocookie' => array(
-        'weight' => 0,
+      'youtube_prevent_rel' => array(
+        'weight' => -45,
+        'status' => 1,
+        'settings' => array(),
+      ),
+      'filter_autop' => array(
+        'weight' => -44,
         'status' => 1,
         'settings' => array(),
       ),
       'pathologic' => array(
-        'weight' => 50,
+        'weight' => -35,
         'status' => 1,
         'settings' => array(
           'settings_source' => 'global',

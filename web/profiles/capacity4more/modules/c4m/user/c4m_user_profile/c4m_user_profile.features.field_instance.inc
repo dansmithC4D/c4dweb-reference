@@ -16,7 +16,7 @@ function c4m_user_profile_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Optional description of yourself.',
     'display' => array(
       'block_list' => array(
         'label' => 'above',
@@ -121,7 +121,7 @@ function c4m_user_profile_field_default_field_instances() {
       'display_summary' => 0,
       'summary_display' => 'default',
       'text_processing' => 1,
-      'user_register_form' => 1,
+      'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 1,
@@ -147,7 +147,7 @@ function c4m_user_profile_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Select the country you originate from (or live in) from the dropdown. Users loggin in via EU login can have this value pre-filled.',
     'display' => array(
       'block_list' => array(
         'label' => 'above',
@@ -241,7 +241,7 @@ function c4m_user_profile_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Enter your first name. Users logging in via EU Login will have their first name pre-filled.',
     'display' => array(
       'block_list' => array(
         'label' => 'above',
@@ -310,11 +310,38 @@ function c4m_user_profile_field_default_field_instances() {
         'weight' => 1,
       ),
     ),
+    'ds_extras_field_template' => '',
     'entity_type' => 'user',
     'field_name' => 'c4m_first_name',
     'label' => 'First Name',
     'required' => 1,
     'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'mail' => 'mail',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'mail' => array(
+              'weight' => 0,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
       'text_processing' => 0,
       'user_register_form' => 1,
     ),
@@ -322,6 +349,8 @@ function c4m_user_profile_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
         'size' => 60,
       ),
       'type' => 'text_textfield',
@@ -421,7 +450,7 @@ function c4m_user_profile_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 9,
+      'weight' => 3,
     ),
   );
 
@@ -485,10 +514,10 @@ function c4m_user_profile_field_default_field_instances() {
       'active' => 1,
       'module' => 'options',
       'settings' => array(
-        'display_label' => 0,
+        'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 10,
+      'weight' => 4,
     ),
   );
 
@@ -510,6 +539,7 @@ function c4m_user_profile_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -562,7 +592,7 @@ function c4m_user_profile_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete_tags',
-      'weight' => 11,
+      'weight' => 5,
     ),
   );
 
@@ -630,78 +660,7 @@ function c4m_user_profile_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 15,
-    ),
-  );
-
-  // Exported field_instance: 'user-user-c4m_is_ldap_user'.
-  $field_instances['user-user-c4m_is_ldap_user'] = array(
-    'bundle' => 'user',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '1 - User is validated in LDAP / 2 user is in a whitelist.',
-    'display' => array(
-      'block_list' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'above',
-        'module' => 'number',
-        'settings' => array(
-          'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
-          'scale' => 0,
-          'thousand_separator' => '',
-        ),
-        'type' => 'number_integer',
-        'weight' => 11,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 23,
-      ),
-      'member_overview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 26,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'user_picture' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'ds_extras_field_template' => '',
-    'entity_type' => 'user',
-    'field_name' => 'c4m_is_ldap_user',
-    'label' => 'Is LDAP User',
-    'required' => 0,
-    'settings' => array(
-      'max' => 2,
-      'min' => 0,
-      'prefix' => '',
-      'suffix' => '',
-      'user_register_form' => 1,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'number',
-      'settings' => array(),
-      'type' => 'number',
-      'weight' => 16,
+      'weight' => 8,
     ),
   );
 
@@ -714,7 +673,7 @@ function c4m_user_profile_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => 'Set if the user\'s email address has a domain mentioned in one of the "Organisation" nodes. ',
+    'description' => 'Set if the user\'s email address has a domain mentioned in one of the "Organisation" entities. ',
     'display' => array(
       'block_list' => array(
         'label' => 'above',
@@ -757,19 +716,19 @@ function c4m_user_profile_field_default_field_instances() {
     'ds_extras_field_template' => '',
     'entity_type' => 'user',
     'field_name' => 'c4m_is_organisation_user',
-    'label' => 'Is Organisation User',
+    'label' => 'Is organisation user',
     'required' => 0,
     'settings' => array(
-      'user_register_form' => 1,
+      'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'options',
       'settings' => array(
-        'display_label' => 0,
+        'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 14,
+      'weight' => 7,
     ),
   );
 
@@ -851,6 +810,7 @@ function c4m_user_profile_field_default_field_instances() {
         'weight' => 17,
       ),
     ),
+    'ds_extras_field_template' => '',
     'entity_type' => 'user',
     'field_name' => 'c4m_is_spammer',
     'label' => 'Is spammer',
@@ -865,7 +825,7 @@ function c4m_user_profile_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 12,
+      'weight' => 6,
     ),
   );
 
@@ -874,7 +834,7 @@ function c4m_user_profile_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Provide an (optional) job title/description.',
     'display' => array(
       'block_list' => array(
         'label' => 'above',
@@ -958,12 +918,14 @@ function c4m_user_profile_field_default_field_instances() {
         ),
       ),
       'text_processing' => 0,
-      'user_register_form' => 1,
+      'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
         'size' => 60,
       ),
       'type' => 'text_textfield',
@@ -976,7 +938,7 @@ function c4m_user_profile_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Enter your surname. Users logging in via EU Login will have their surname pre-filled.',
     'display' => array(
       'block_list' => array(
         'label' => 'above',
@@ -1045,11 +1007,38 @@ function c4m_user_profile_field_default_field_instances() {
         'weight' => 2,
       ),
     ),
+    'ds_extras_field_template' => '',
     'entity_type' => 'user',
     'field_name' => 'c4m_last_name',
     'label' => 'Last Name',
     'required' => 1,
     'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'mail' => 'mail',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'mail' => array(
+              'weight' => 0,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
       'text_processing' => 0,
       'user_register_form' => 1,
     ),
@@ -1057,6 +1046,8 @@ function c4m_user_profile_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
         'size' => 60,
       ),
       'type' => 'text_textfield',
@@ -1155,7 +1146,7 @@ function c4m_user_profile_field_default_field_instances() {
       'max_resolution' => '',
       'min_resolution' => '60x60',
       'title_field' => 1,
-      'user_register_form' => 1,
+      'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 1,
@@ -1169,308 +1160,12 @@ function c4m_user_profile_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-c4m_optout_comment'.
-  $field_instances['user-user-c4m_optout_comment'] = array(
-    'bundle' => 'user',
-    'default_value' => array(),
-    'default_value_function' => '',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'block_list' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 16,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 22,
-      ),
-      'member_overview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 41,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'user_picture' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'ds_extras_field_template' => '',
-    'entity_type' => 'user',
-    'field_name' => 'c4m_optout_comment',
-    'label' => 'Unsubscribe from comment notifications',
-    'required' => 0,
-    'settings' => array(
-      'behaviors' => array(
-        'prepopulate' => array(
-          'status' => 0,
-        ),
-      ),
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'entityreference',
-      'settings' => array(
-        'match_operator' => 'CONTAINS',
-        'path' => '',
-        'size' => 60,
-      ),
-      'type' => 'entityreference_autocomplete',
-      'weight' => 21,
-    ),
-  );
-
-  // Exported field_instance: 'user-user-c4m_optout_group'.
-  $field_instances['user-user-c4m_optout_group'] = array(
-    'bundle' => 'user',
-    'default_value' => array(),
-    'default_value_function' => '',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'block_list' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 15,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 27,
-      ),
-      'member_overview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 36,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'user_picture' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'ds_extras_field_template' => '',
-    'entity_type' => 'user',
-    'field_name' => 'c4m_optout_group',
-    'label' => 'Unsubscribe from group notifications',
-    'required' => 0,
-    'settings' => array(
-      'behaviors' => array(
-        'prepopulate' => array(
-          'status' => 0,
-        ),
-      ),
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'entityreference',
-      'settings' => array(
-        'match_operator' => 'CONTAINS',
-        'path' => '',
-        'size' => 60,
-      ),
-      'type' => 'entityreference_autocomplete',
-      'weight' => 20,
-    ),
-  );
-
-  // Exported field_instance: 'user-user-c4m_optout_node'.
-  $field_instances['user-user-c4m_optout_node'] = array(
-    'bundle' => 'user',
-    'default_value' => array(),
-    'default_value_function' => '',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'block_list' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 13,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 28,
-      ),
-      'member_overview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 37,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'user_picture' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'ds_extras_field_template' => '',
-    'entity_type' => 'user',
-    'field_name' => 'c4m_optout_node',
-    'label' => 'Unsubscribe from node notifications',
-    'required' => 0,
-    'settings' => array(
-      'behaviors' => array(
-        'prepopulate' => array(
-          'status' => 0,
-        ),
-      ),
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'entityreference',
-      'settings' => array(
-        'match_operator' => 'CONTAINS',
-        'path' => '',
-        'size' => 60,
-      ),
-      'type' => 'entityreference_autocomplete',
-      'weight' => 18,
-    ),
-  );
-
-  // Exported field_instance: 'user-user-c4m_optout_taxonomy_term'.
-  $field_instances['user-user-c4m_optout_taxonomy_term'] = array(
-    'bundle' => 'user',
-    'default_value' => array(),
-    'default_value_function' => '',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'block_list' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 14,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 29,
-      ),
-      'member_overview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 42,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'user_picture' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'ds_extras_field_template' => '',
-    'entity_type' => 'user',
-    'field_name' => 'c4m_optout_taxonomy_term',
-    'label' => 'Unsubscribe from terms notifications',
-    'required' => 0,
-    'settings' => array(
-      'behaviors' => array(
-        'prepopulate' => array(
-          'status' => 0,
-        ),
-      ),
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'entityreference',
-      'settings' => array(
-        'match_operator' => 'CONTAINS',
-        'path' => '',
-        'size' => 60,
-      ),
-      'type' => 'entityreference_autocomplete',
-      'weight' => 19,
-    ),
-  );
-
   // Exported field_instance: 'user-user-c4m_organisation'.
   $field_instances['user-user-c4m_organisation'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Enter the name of the organisation you work for. Some users will have their organisation pre-filled by either EU Login data or by the domain in their e-mailaddress.',
     'display' => array(
       'block_list' => array(
         'label' => 'above',
@@ -1583,6 +1278,8 @@ function c4m_user_profile_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
         'size' => 60,
       ),
       'type' => 'text_textfield',
@@ -1595,7 +1292,7 @@ function c4m_user_profile_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Enter the type of the organisation (sector) you work for. Some users will have this type pre-filled by either EU Login data or by the domain in their e-mailaddress.',
     'display' => array(
       'block_list' => array(
         'label' => 'above',
@@ -1651,99 +1348,6 @@ function c4m_user_profile_field_default_field_instances() {
       ),
       'type' => 'options_select',
       'weight' => 6,
-    ),
-  );
-
-  // Exported field_instance: 'user-user-c4m_unsubscribe_hash'.
-  $field_instances['user-user-c4m_unsubscribe_hash'] = array(
-    'bundle' => 'user',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'block_list' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 12,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 20,
-      ),
-      'member_overview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 38,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'user_picture' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'ds_extras_field_template' => '',
-    'entity_type' => 'user',
-    'field_name' => 'c4m_unsubscribe_hash',
-    'label' => 'Unsubscribe Hash',
-    'required' => 0,
-    'settings' => array(
-      'better_formats' => array(
-        'allowed_formats' => array(
-          'filtered_html' => 'filtered_html',
-          'full_html' => 'full_html',
-          'mail' => 'mail',
-          'plain_text' => 'plain_text',
-        ),
-        'allowed_formats_toggle' => 0,
-        'default_order_toggle' => 0,
-        'default_order_wrapper' => array(
-          'formats' => array(
-            'filtered_html' => array(
-              'weight' => 0,
-            ),
-            'full_html' => array(
-              'weight' => 1,
-            ),
-            'mail' => array(
-              'weight' => 0,
-            ),
-            'plain_text' => array(
-              'weight' => 10,
-            ),
-          ),
-        ),
-      ),
-      'text_processing' => 0,
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'maxlength_js' => 0,
-        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 17,
     ),
   );
 
@@ -1834,7 +1438,7 @@ You can select maximum 3 regions and an unlimited number of subregions or countr
     'label' => 'Regions & Countries',
     'required' => 0,
     'settings' => array(
-      'user_register_form' => 1,
+      'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 0,
@@ -1933,7 +1537,7 @@ You can select maximum 3 topics and an unlimited number of subtopics.',
     'label' => 'Topics of Interest',
     'required' => 0,
     'settings' => array(
-      'user_register_form' => 1,
+      'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 0,
@@ -2032,7 +1636,7 @@ You can select maximum 3 topics and an unlimited number of subtopics.',
     'label' => 'Topics of Expertise',
     'required' => 0,
     'settings' => array(
-      'user_register_form' => 1,
+      'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 0,
@@ -2045,38 +1649,38 @@ You can select maximum 3 topics and an unlimited number of subtopics.',
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('1 - User is validated in LDAP / 2 user is in a whitelist.');
   t('About You');
   t('Country');
+  t('Enter the name of the organisation you work for. Some users will have their organisation pre-filled by either EU Login data or by the domain in their e-mailaddress.');
+  t('Enter the type of the organisation (sector) you work for. Some users will have this type pre-filled by either EU Login data or by the domain in their e-mailaddress.');
+  t('Enter your first name. Users logging in via EU Login will have their first name pre-filled.');
+  t('Enter your surname. Users logging in via EU Login will have their surname pre-filled.');
   t('First Name');
-  t('Is LDAP User');
-  t('Is Organisation User');
   t('Is deleted');
   t('Is deleted anonymous');
   t('Is deleted by');
   t('Is invalid email');
+  t('Is organisation user');
   t('Is spammer');
   t('Job title');
   t('Last Name');
+  t('Optional description of yourself.');
   t('Organisation');
   t('Organisation type');
   t('Picture');
+  t('Provide an (optional) job title/description.');
   t('Regions & Countries');
   t('Select one or more topics you are interested in.
 You can select maximum 3 topics and an unlimited number of subtopics.');
+  t('Select the country you originate from (or live in) from the dropdown. Users loggin in via EU login can have this value pre-filled.');
   t('Select your area(s) of expertise.
 You can select maximum 3 topics and an unlimited number of subtopics.');
   t('Set if the user lost his LDAP validation.');
-  t('Set if the user\'s email address has a domain mentioned in one of the "Organisation" nodes. ');
+  t('Set if the user\'s email address has a domain mentioned in one of the "Organisation" entities. ');
   t('The Regions & Countries you are interested in.
 You can select maximum 3 regions and an unlimited number of subregions or countries.');
   t('Topics of Expertise');
   t('Topics of Interest');
-  t('Unsubscribe Hash');
-  t('Unsubscribe from comment notifications');
-  t('Unsubscribe from group notifications');
-  t('Unsubscribe from node notifications');
-  t('Unsubscribe from terms notifications');
 
   return $field_instances;
 }

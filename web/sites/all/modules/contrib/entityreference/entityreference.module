@@ -76,6 +76,44 @@ function entityreference_field_info() {
 }
 
 /**
+ * Implements hook_element_info_alter().
+ *
+ * Adds a new process callback to handle the #entityreference property.
+ */
+function entityreference_element_info_alter(&$type) {
+  array_unshift($type['textfield']['#process'], 'entityreference_textfield_element_process');
+}
+
+/**
+ * Adds entityrerefence functionality to elements with a valid
+ * #autocomplete_path. Also attach the entityreference validation callback on
+ * the element.
+ *
+ * The items bellow described the list of accepted parameters for
+ * #entityreference property:
+ *   - type: (optional, default: tags) [single|tags]
+ *   - handler: (optional, default: base) the entity_reference handler.
+ *   - target_type: the target entity type.
+ *   - handler_settings: (optional) An array of handler settings such as
+ *     target_bundles, sort and auto_create.
+ *
+ * @param array $element
+ *   Form API element.
+ * @param array $form_state
+ *   Form state API element.
+ *
+ * @return array
+ *   Processed element.
+ */
+function entityreference_textfield_element_process($element, &$form_state) {
+  if (!empty($element['#entityreference'])) {
+    $element['#autocomplete_path'] = 'entityreference/form_element/autocomplete/' . base64_encode(serialize($element['#entityreference']));
+    $element['#element_validate'] = array('_entityreference_form_element_autocomplete_validate');
+  }
+  return $element;
+}
+
+/**
  * Implements hook_flush_caches().
  */
 function entityreference_flush_caches() {
@@ -128,6 +166,14 @@ function entityreference_menu() {
     'page arguments' => array(2, 3, 4, 5),
     'access callback' => 'entityreference_autocomplete_access_callback',
     'access arguments' => array(2, 3, 4, 5),
+    'type' => MENU_CALLBACK,
+  );
+  $items['entityreference/form_element/autocomplete/%'] = array(
+    'title' => 'Form element Autocomplete',
+    'page callback' => 'entityreference_form_element_autocomplete_callback',
+    'page arguments' => array(3),
+    'access callback' => 'entityreference_form_element_autocomplete_access_callback',
+    'access arguments' => array(3),
     'type' => MENU_CALLBACK,
   );
 
@@ -986,6 +1032,28 @@ function _entityreference_autocomplete_tags_validate($element, &$form_state, $fo
   form_set_value($element, $value, $form_state);
 }
 
+
+/**
+ * Validation callback for autocomplete form element
+ *
+ * @param array $element
+ *   The form element.
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
+ */
+function _entityreference_form_element_autocomplete_validate($element, &$form_state, $form) {
+  $type = isset($element['#entityreference']['type']) ? $element['#entityreference']['type'] : FALSE;
+
+  if (!$type || $type == 'tags') {
+    _entityreference_autocomplete_tags_validate($element, $form_state, $form);
+  }
+  elseif ($type == 'single') {
+    _entityreference_autocomplete_validate($element, $form_state, $form);
+  }
+}
+
 /**
  * Implements hook_field_widget_error().
  */
@@ -1016,6 +1084,25 @@ function entityreference_autocomplete_access_callback($type, $field_name, $entit
     return FALSE;
   }
   return TRUE;
+}
+
+/**
+ * Menu access callback for the form element autocomplete widget.
+ *
+ * @param string $settings
+ *   The entityreference settings from the element.
+ *
+ * @return bool
+ *   True if user can access this menu item.
+ */
+function entityreference_form_element_autocomplete_access_callback($settings) {
+  $settings = unserialize(base64_decode($settings));
+
+  if ($settings || isset($settings['target_type'])) {
+    return TRUE;
+  }
+
+  return FALSE;
 }
 
 /**
@@ -1053,6 +1140,40 @@ function entityreference_autocomplete_callback($type, $field_name, $entity_type,
   $instance = field_info_instance($entity_type, $field_name, $bundle_name);
 
   return entityreference_autocomplete_callback_get_matches($type, $field, $instance, $entity_type, $entity_id, $string);
+}
+
+/**
+ * Menu callback: autocomplete the label of a entityreference form element.
+ *
+ * @param string $settings
+ *   The entity_reference settings from the element.
+ * @param string $string
+ *   The label of the entity to query by.
+ *
+ * @return string
+ *   Matches found.
+ */
+function entityreference_form_element_autocomplete_callback($settings, $string = '') {
+  $settings = unserialize(base64_decode($settings));
+
+  // Defines both mock field and instance array.
+  $field = array(
+    'settings' => array(
+      'target_type' => $settings['target_type'],
+      'handler' => isset($settings['handler']) ? $settings['handler'] : 'base',
+      'handler_settings' => isset($settings['handler_settings']) ? $settings['handler_settings'] : array('target_bundles' => array()),
+    )
+  );
+  $instance = array(
+    'widget' => array(
+      'settings' => array(
+        'match_operator' => 'CONTAINS'
+      )
+    )
+  );
+  $type = isset($settings['type']) ? $settings['type'] : 'tags';
+
+  return entityreference_autocomplete_callback_get_matches($type, $field, $instance, array(), 'NULL', $string);
 }
 
 /**
