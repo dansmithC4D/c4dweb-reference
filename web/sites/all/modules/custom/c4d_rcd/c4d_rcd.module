@@ -165,6 +165,20 @@ function c4d_rcd_menu() {
 }
 
 /**
+ * Implements hook_menu_alter().
+ */
+function c4d_rcd_menu_alter(&$items) {
+  if (module_exists('overlay')) {
+    // Make sure all admin/c4d paths are not displayed in the overlay.
+    foreach ($items as $key => $value) {
+      if (strpos($key, 'admin/c4d') === 0) {
+        $items[$key]['options']['attributes']['class'][] = 'overlay-exclude';
+      }
+    }
+  }
+}
+
+/**
  * Custom delivery callback to return bare HTML.
  *
  * @param type $page_callback_result
