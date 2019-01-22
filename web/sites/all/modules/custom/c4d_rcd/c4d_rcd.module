@@ -325,6 +325,29 @@ function c4d_rcd_form_eck__entity__delete_form_alter(&$form, &$form_state, $form
 }
 
 /**
+ * Implements hook_eck_entity_type_insert().
+ */
+function c4d_rcd_eck_entity_type_insert(EntityType $entity_type) {
+  if ($entity_type != C4D_RCD_ENTITY_TYPE) {
+    return;
+  }
+
+  // The SVG editor relies on specific 'magic' IDs (colonna: 12/13/100) for
+  // priority areas.
+  // We need to make sure those IDs won't be used, so we set the auto-increment
+  // to 101 to avoid conflicts.
+  // First check if the auto-increment is less than 101, otherwise we skip this
+  // task.
+  $table = 'eck_result_chain_diagram';
+  if (db_table_exists($table)) {
+    $result = db_query("SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '$table';")->fetchAssoc();
+    if ($result['AUTO_INCREMENT'] <= 101) {
+      db_query("ALTER TABLE $table AUTO_INCREMENT = 101;");
+    }
+  }
+}
+
+/**
  * Implements hook_entity_presave().
  */
 function c4d_rcd_entity_presave($entity, $type) {

@@ -15,9 +15,12 @@ function c4d_rcd_install() {
   // code, because inexplicably the eck_result_chain_diagram table is not
   // created at the time c4d_rcd_install() is run.
   // So you should enable c4d_rcd_data_types and c4d_rcd one after the other.
-  $result = db_query("SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'eck_result_chain_diagram';")->fetchAssoc();
-  if ($result['AUTO_INCREMENT'] <= 101) {
-    db_query('ALTER TABLE eck_result_chain_diagram AUTO_INCREMENT = 101;');
+  $table = 'eck_result_chain_diagram';
+  if (db_table_exists($table)) {
+    $result = db_query("SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '$table';")->fetchAssoc();
+    if ($result['AUTO_INCREMENT'] <= 101) {
+      db_query("ALTER TABLE $table AUTO_INCREMENT = 101;");
+    }
   }
 }
 
