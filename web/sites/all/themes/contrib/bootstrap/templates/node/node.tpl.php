@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Default theme implementation to display a node.
@@ -103,16 +102,11 @@
     hide($content['field_tags']);
     print render($content);
   ?>
-  <?php
-    // Only display the wrapper div if there are tags or links.
-    $field_tags = render($content['field_tags']);
-    $links = render($content['links']);
-    if ($field_tags || $links):
-  ?>
-   <footer>
-     <?php print $field_tags; ?>
-     <?php print $links; ?>
+  <?php if (!empty($content['field_tags']) || !empty($content['links'])): ?>
+  <footer>
+    <?php print render($content['field_tags']); ?>
+    <?php print render($content['links']); ?>
   </footer>
-    <?php endif; ?>
+  <?php endif; ?>
   <?php print render($content['comments']); ?>
 </article>

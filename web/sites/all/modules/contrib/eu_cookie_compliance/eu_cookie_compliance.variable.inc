@@ -1,11 +1,6 @@
 <?php
 
 /**
- * @file
- * Configuration for translations.
- */
-
-/**
  * Implements hook_variable_info().
  */
 function eu_cookie_compliance_variable_info($options) {
@@ -15,7 +10,6 @@ function eu_cookie_compliance_variable_info($options) {
     'type' => 'array',
     'access' => 'administer EU Cookie Compliance popup',
     'localize' => TRUE,
-    'multidomain' => TRUE,
   );
 
   return $variable;

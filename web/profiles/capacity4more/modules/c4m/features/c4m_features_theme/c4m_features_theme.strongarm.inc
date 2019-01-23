@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * c4m_features_theme.strongarm.inc
@@ -46,7 +45,7 @@ function c4m_features_theme_strongarm() {
     'bootstrap_table_condensed' => 0,
     'bootstrap_table_hover' => 1,
     'bootstrap_table_striped' => 1,
-    'bootstrap_table_responsive' => '1',
+    'bootstrap_table_responsive' => 1,
     'bootstrap_navbar_position' => '',
     'bootstrap_navbar_inverse' => 0,
     'bootstrap_pager_first_and_last' => 1,
@@ -106,7 +105,7 @@ function c4m_features_theme_strongarm() {
     'bootstrap_cdn_custom_js_min' => 'https://cdn.jsdelivr.net/bootstrap/3.3.5/js/bootstrap.min.js',
     'bootstrap_cdn_jsdelivr_version' => '3.3.5',
     'bootstrap_cdn_jsdelivr_theme' => 'bootstrap',
-    'jquery_update_jquery_version' => '1.12',
+    'jquery_update_jquery_version' => '1.8',
   );
   $export['theme_kapablo_settings'] = $strongarm;
 

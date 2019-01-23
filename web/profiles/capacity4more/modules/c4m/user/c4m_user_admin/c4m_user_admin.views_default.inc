@@ -906,16 +906,6 @@ Last access : [access]';
   $handler->display->display_options['fields']['name']['alter']['path'] = 'user/[uid]';
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
-  /* Field: User: Is LDAP User */
-  $handler->display->display_options['fields']['c4m_is_ldap_user']['id'] = 'c4m_is_ldap_user';
-  $handler->display->display_options['fields']['c4m_is_ldap_user']['table'] = 'field_data_c4m_is_ldap_user';
-  $handler->display->display_options['fields']['c4m_is_ldap_user']['field'] = 'c4m_is_ldap_user';
-  $handler->display->display_options['fields']['c4m_is_ldap_user']['label'] = 'LDAP Validated';
-  $handler->display->display_options['fields']['c4m_is_ldap_user']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['c4m_is_ldap_user']['settings'] = array(
-    'thousand_separator' => '',
-    'prefix_suffix' => 0,
-  );
   /* Field: User: Active */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'users';
@@ -1115,6 +1105,10 @@ Last access : [access]';
   $handler->display->display_options['fields']['user_metrics_12']['label'] = 'Administered programmes';
   $handler->display->display_options['fields']['user_metrics_12']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['user_metrics_12']['c4m_user_admin_user_metric'] = 'user::programmes_administered';
+  /* Field: User: Eu Login validated */
+  $handler->display->display_options['fields']['eu_login']['id'] = 'eu_login';
+  $handler->display->display_options['fields']['eu_login']['table'] = 'users';
+  $handler->display->display_options['fields']['eu_login']['field'] = 'eu_login';
   $handler->display->display_options['path'] = 'admin/people/export/file';
   $handler->display->display_options['use_batch'] = 'batch';
   $handler->display->display_options['return_path'] = 'admin/people/export';

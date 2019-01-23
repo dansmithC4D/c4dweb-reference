@@ -2,21 +2,27 @@
 
 /**
  * @file
- * Views integration.
+ * Views plugins.
  */
 
 /**
  * Implements hook_views_plugins().
  */
 function c4m_features_og_members_views_plugins() {
-  $plugins = [
-    'argument default' => [
-      'c4m_features_og_members_default_membership_types' => [
-        'title' => t('C4M Default membership types for the active group'),
-        'handler' => 'c4m_features_og_members_default_membership_types',
+  $plugins = array(
+    'module' => 'c4m_features_og_members',
+    'argument default' => array(
+      'c4m_features_og_members_plugin_argument_default' => array(
+        'title' => t('C4M group members'),
+        'handler' => 'c4m_features_og_members_plugin_argument_default',
         'path' => drupal_get_path('module', 'c4m_features_og_members') . '/includes',
-      ],
-    ],
-  ];
+        'theme path' => drupal_get_path('module', 'views') . '/theme',
+        'theme file' => 'theme.inc',
+        // So that the parent class is included.
+        'parent' => 'fixed',
+      ),
+    ),
+  );
+
   return $plugins;
 }

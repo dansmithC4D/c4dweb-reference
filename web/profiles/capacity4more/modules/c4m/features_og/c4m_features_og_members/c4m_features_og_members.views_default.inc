@@ -52,6 +52,11 @@ function c4m_features_og_members_views_default_views() {
   $handler->display->display_options['header']['c4m_views_result']['table'] = 'views';
   $handler->display->display_options['header']['c4m_views_result']['field'] = 'c4m_views_result';
   $handler->display->display_options['header']['c4m_views_result']['content'] = '<span class="total-items">@total members</span>';
+  /* Header: Items per page */
+  $handler->display->display_options['header']['c4m_views_items_per_page']['id'] = 'c4m_views_items_per_page';
+  $handler->display->display_options['header']['c4m_views_items_per_page']['table'] = 'views';
+  $handler->display->display_options['header']['c4m_views_items_per_page']['field'] = 'c4m_views_items_per_page';
+  $handler->display->display_options['header']['c4m_views_items_per_page']['ui_name'] = 'Items per page';
   /* Field: User: Rendered User */
   $handler->display->display_options['fields']['rendered_entity']['id'] = 'rendered_entity';
   $handler->display->display_options['fields']['rendered_entity']['table'] = 'views_entity_user';
@@ -82,22 +87,20 @@ function c4m_features_og_members_views_default_views() {
       'label' => '',
     ),
   );
-  /* Contextual filter: Indexed User: OG membership type */
-  $handler->display->display_options['arguments']['c4m_og_membership_type']['id'] = 'c4m_og_membership_type';
-  $handler->display->display_options['arguments']['c4m_og_membership_type']['table'] = 'search_api_index_c4m_search_users';
-  $handler->display->display_options['arguments']['c4m_og_membership_type']['field'] = 'c4m_og_membership_type';
-  $handler->display->display_options['arguments']['c4m_og_membership_type']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['c4m_og_membership_type']['default_argument_type'] = 'c4m_features_og_members_default_membership_types';
-  $handler->display->display_options['arguments']['c4m_og_membership_type']['default_argument_skip_url'] = TRUE;
-  $handler->display->display_options['arguments']['c4m_og_membership_type']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['c4m_og_membership_type']['break_phrase'] = 1;
-  $handler->display->display_options['arguments']['c4m_og_membership_type']['not'] = 0;
+  /* Contextual filter: Indexed User: User ID */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'search_api_index_c4m_search_users';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'c4m_features_og_members_plugin_argument_default';
+  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['uid']['break_phrase'] = 1;
+  $handler->display->display_options['arguments']['uid']['not'] = 0;
   /* Filter criterion: Search form */
   $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
   $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_c4m_search_users';
   $handler->display->display_options['filters']['search_api_views_fulltext']['field'] = 'search_api_views_fulltext';
   $handler->display->display_options['filters']['search_api_views_fulltext']['ui_name'] = 'Search form';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['group'] = 1;
   $handler->display->display_options['filters']['search_api_views_fulltext']['exposed'] = TRUE;
   $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator_id'] = 'search_api_views_fulltext_op';
   $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['label'] = 'Search';
@@ -115,7 +118,6 @@ function c4m_features_og_members_views_default_views() {
   $handler->display->display_options['filters']['c4m_is_deleted']['value'] = array(
     0 => '0',
   );
-  $handler->display->display_options['filters']['c4m_is_deleted']['group'] = 1;
   /* Filter criterion: Indexed User: Is spammer */
   $handler->display->display_options['filters']['c4m_is_spammer']['id'] = 'c4m_is_spammer';
   $handler->display->display_options['filters']['c4m_is_spammer']['table'] = 'search_api_index_c4m_search_users';
@@ -123,7 +125,6 @@ function c4m_features_og_members_views_default_views() {
   $handler->display->display_options['filters']['c4m_is_spammer']['value'] = array(
     0 => '0',
   );
-  $handler->display->display_options['filters']['c4m_is_spammer']['group'] = 1;
   /* Filter criterion: Indexed User: Status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'search_api_index_c4m_search_users';
@@ -131,7 +132,6 @@ function c4m_features_og_members_views_default_views() {
   $handler->display->display_options['filters']['status']['value'] = array(
     1 => '1',
   );
-  $handler->display->display_options['filters']['status']['group'] = 1;
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
@@ -143,6 +143,8 @@ function c4m_features_og_members_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['quantity'] = '5';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page'] = TRUE;
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options'] = '10, 20, 50';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['defaults']['style_options'] = FALSE;

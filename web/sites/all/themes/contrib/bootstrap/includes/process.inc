@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * process.inc
@@ -48,13 +47,14 @@ function bootstrap_form_process($element, &$form_state, &$form) {
 
     // Ignore buttons before we find the element in the form.
     $found_current_element = FALSE;
-    foreach (element_children($parent, TRUE) as $child) {
+    foreach (element_children($parent) as $child) {
       if ($parent[$child] === $element) {
         $found_current_element = TRUE;
         continue;
       }
 
-      if ($found_current_element && _bootstrap_is_button($parent[$child]) && (!isset($parent[$child]['#access']) || !!$parent[$child]['#access'])) {
+      if ($found_current_element && _bootstrap_is_button($parent[$child])) {
+        _bootstrap_iconize_button($parent[$child]);
         $element['#field_suffix'] = drupal_render($parent[$child]);
         break;
       }

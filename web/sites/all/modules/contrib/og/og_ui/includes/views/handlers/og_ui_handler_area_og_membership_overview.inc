@@ -115,7 +115,9 @@ class og_ui_handler_area_og_membership_overview extends views_handler_area {
     if ($this->options['total_members']) {
       // Total members.
       $query = clone $base_query;
-      $query->propertyCondition('entity_type', 'user', '=');
+      $query->propertyCondition('entity_type', 'user', '=')
+        ->propertyCondition('state', OG_STATE_ACTIVE, '=')
+        ->addTag('c4m_active_group_member');
 
       $invited_count = FALSE;
       $invited_memberships_ids = c4m_og_get_invited_memberships_ids();

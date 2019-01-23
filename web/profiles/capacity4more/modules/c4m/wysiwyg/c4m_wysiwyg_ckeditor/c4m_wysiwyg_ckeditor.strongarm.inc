@@ -42,13 +42,6 @@ function c4m_wysiwyg_ckeditor_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'media_ckeditor_fully_rendered_files';
-  $strongarm->value = 1;
-  $export['media_ckeditor_fully_rendered_files'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'pathologic_local_paths';
   $strongarm->value = '';
   $export['pathologic_local_paths'] = $strongarm;

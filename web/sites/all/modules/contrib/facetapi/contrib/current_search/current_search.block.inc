@@ -6,54 +6,6 @@
  */
 
 /**
- * Implements hook_form_FORM_ID_alter().
- *
- * Adds the searcher visibility settings to the block form.
- */
-function current_search_form_block_admin_configure_alter(&$form, &$form_state) {
-  if ('current_search' == $form['module']['#value']) {
-
-    $form['visibility']['current_search'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Search page'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-      '#group' => 'visibility',
-      '#weight' => -5,
-      '#attached' => array(
-        'js' => array(drupal_get_path('module', 'current_search') . '/current_search.js'),
-      ),
-    );
-
-    // Gets the default value for this block.
-    $searcher = db_query("SELECT searcher FROM {block_current_search} WHERE delta = :delta", array(
-      ':delta' => $form['delta']['#value'],
-    ))->fetchField();
-
-    $form['visibility']['current_search']['searcher'] = array(
-      '#type' => 'radios',
-      '#title' => t('Search page'),
-      '#options' => current_search_get_searcher_options(),
-      '#description' => t('Select the search page this block is active on.'),
-      '#default_value' => ($searcher) ? $searcher : current_search_get_default_searcher(),
-    );
-
-    // Adds submit handler to save the searcher data.
-    $form['#submit'][] = 'current_search_form_block_admin_configure_submit';
-  }
-}
-
-/**
- * Form submit handler for block configuration form.
- *
- * @see current_search_form_block_admin_configure_alter()
- */
-function current_search_form_block_admin_configure_submit($form, &$form_state) {
-  $values = $form_state['values'];
-  current_search_set_block_searcher($values['delta'], $values['searcher']);
-}
-
-/**
  * Implements hook_block_info().
  */
 function current_search_block_info() {
@@ -90,66 +42,40 @@ function current_search_ctools_block_info($module, $delta, &$info) {
  * Returns the content for a facet based on the delta.
  */
 function current_search_block_view($delta = '') {
-  // Test block visibility.
-  $searcher = current_search_get_block_searcher($delta);
+  // Test block visibility and ensure the config and adapter will load.
   if (!current_search_check_visibility($delta)) {
     return;
   }
 
-  // Makes sure the adapter and configuration can be loaded.
-  $adapter = facetapi_adapter_load($searcher);
-  if ($adapter && ($config = ctools_export_crud_load('current_search', $delta))) {
-    $build = array();
+  // Load configuration and adapter.
+  $config = ctools_export_crud_load('current_search', $delta);
+  $adapter = facetapi_adapter_load($config->settings['searcher']);
 
-    // Iterates over configs and executes the plugins.
-    foreach ($config->settings['items'] as $name => $settings) {
-      if ($class = ctools_plugin_load_class('current_search', 'items', $settings['id'], 'handler')) {
-        $plugin = new $class($name, $config);
-        if ($return = $plugin->execute($adapter)) {
-          $build[$name] = $return;
-          $build[$name]['#theme_wrappers'][] = 'current_search_item_wrapper';
-          $build[$name]['#current_search_id'] = $settings['id'];
-          $build[$name]['#current_search_name'] = $name;
-        }
+  $build = array();
+
+  // Iterate over items and execute the plugins.
+  foreach ($config->settings['items'] as $name => $item) {
+    if ($class = ctools_plugin_load_class('current_search', 'items', $item['id'], 'handler')) {
+      $plugin = new $class($name, $config);
+      if ($return = $plugin->execute($adapter)) {
+        $build[$name] = $return;
+        $build[$name]['#theme_wrappers'][] = 'current_search_item_wrapper';
+        $build[$name]['#current_search_id'] = $item['id'];
+        $build[$name]['#current_search_name'] = $name;
       }
     }
-
-    // Returns the block content.
-    if ($build) {
-      $build['#contextual_links'] = array(
-        'current_search' => array('admin/config/search/current_search/list', array($delta)),
-      );
-      return array(
-        'subject' => t('Current search'),
-        'content' => $build,
-      );
-    }
   }
-}
 
-/**
- * Sets the block searcher for a configuration.
- *
- * @param $name
- *   A string containing the machine readable name of the configuration. The
- *   name also doubles as the block delta.
- * @param $searcher
- *   The machine readable name of the searcher.
- */
-function current_search_set_block_searcher($name, $searcher) {
-  // Deletes current search data.
-  db_delete('block_current_search')
-    ->condition('delta', $name)
-    ->execute();
-
-  // Inserts new data into database.
-  db_insert('block_current_search')
-    ->fields(array('delta', 'searcher'))
-    ->values(array(
-      'delta' => $name,
-      'searcher' => $searcher,
-    ))
-    ->execute();
+  // Return the block content.
+  if (count($build)) {
+    $build['#contextual_links'] = array(
+      'current_search' => array('admin/config/search/current_search/list', array($delta)),
+    );
+    return array(
+      'subject' => t('Current search'),
+      'content' => $build,
+    );
+  }
 }
 
 /**
@@ -166,19 +92,21 @@ function current_search_set_block_searcher($name, $searcher) {
  *   A boolean flagging whether to display this block or not.
  */
 function current_search_check_visibility($delta) {
-  $searcher = current_search_get_block_searcher($delta);
 
   // Checks whether block should be displayed.
-  if (!facetapi_is_active_searcher($searcher)) {
-    return FALSE;
-  }
-  if (!$adapter = facetapi_adapter_load($searcher)) {
-    return FALSE;
-  }
-  if (!$adapter->searchExecuted($searcher)) {
-    return FALSE;
-  }
   if (!$config = current_search_item_load($delta)) {
+    return FALSE;
+  }
+  if (empty($config->settings['searcher'])) {
+    return FALSE;
+  }
+  if (!facetapi_is_active_searcher($config->settings['searcher'])) {
+    return FALSE;
+  }
+  if (!$adapter = facetapi_adapter_load($config->settings['searcher'])) {
+    return FALSE;
+  }
+  if (!$adapter->searchExecuted($config->settings['searcher'])) {
     return FALSE;
   }
 
@@ -194,30 +122,6 @@ function current_search_check_visibility($delta) {
     default:
       return TRUE;
   }
-}
-
-/**
- * Gets the searcher associated with the delta.
- *
- * @param string $delta
- *   The block delta.
- *
- * @return string
- *   The machine name of the searcher associated with the block.
- */
-function current_search_get_block_searcher($delta) {
-  $map = &drupal_static('current_search_delta_map');
-  if (NULL === $map) {
-    $map = array();
-    $result = db_query('SELECT delta, searcher FROM {block_current_search}');
-    foreach ($result as $record) {
-      $map[$record->delta] = $record->searcher;
-    }
-  }
-  if (!isset($map[$delta])) {
-    $map[$delta] = current_search_get_default_searcher();
-  }
-  return $map[$delta];
 }
 
 /**

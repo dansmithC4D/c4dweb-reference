@@ -50,28 +50,6 @@ function current_search_schema() {
     'primary key' => array('name'),
   );
 
-  $schema['block_current_search'] = array(
-    'description' => 'Sets up display criteria for blocks based on searcher',
-    'fields' => array(
-      'delta' => array(
-        'type' => 'varchar',
-        'length' => 32,
-        'not null' => TRUE,
-        'description' => "The block's unique delta within module, from {block}.delta.",
-      ),
-      'searcher' => array(
-        'type' => 'varchar',
-        'length' => 128,
-        'not null' => TRUE,
-        'description' => "The machine-readable name of the searcher.",
-      ),
-    ),
-    'primary key' => array('delta'),
-    'indexes' => array(
-      'searcher' => array('searcher'),
-    ),
-  );
-
   return $schema;
 }
 
@@ -106,5 +84,41 @@ function current_search_update_7101() {
         ->fields(array('settings' => serialize($settings)))
         ->execute();
     }
+  }
+}
+
+/**
+ * Move searcher into exportable setting.
+ */
+function current_search_update_7102() {
+  // @see https://www.drupal.org/node/1469002
+
+  $result = db_select('current_search', 'cs')
+    ->fields('cs', array('name', 'settings'))
+    ->execute();
+  foreach ($result as $record) {
+    $settings = unserialize($record->settings);
+
+    // Pull in the existing searcher setting if there is one.
+    $settings['searcher'] = db_select('block_current_search', 'bcs')
+      ->condition('bcs.delta', $record->name)
+      ->fields('bcs', array('searcher'))
+      ->execute()
+      ->fetchField();
+
+    if (!$settings['searcher']) {
+      $settings['searcher'] = current_search_get_default_searcher();
+    }
+
+    db_update('current_search')
+      ->fields(array('settings' => serialize($settings)))
+      ->condition('name', $record->name)
+      ->execute();
+  }
+
+  // Remove obsolete table.
+  $table = 'block_current_search';
+  if (db_table_exists($table)) {
+    db_drop_table($table);
   }
 }

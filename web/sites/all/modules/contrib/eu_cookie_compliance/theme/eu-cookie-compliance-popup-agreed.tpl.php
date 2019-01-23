@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * This is a template file for a pop-up informing a user that he has already
@@ -12,8 +11,8 @@
  * find-more-button  - link to an information page
  *
  * Variables available:
- * - $message:  Contains the text that will be display within the pop-up
- * - $hide_button: Contains hide button title
+ * - $message:  Contains the text that will be display whithin the pop-up
+ * - $hide_button: Contains hide butlon title
  * - $find_more_button: Contains find more button title
  */
 ?>
@@ -23,10 +22,8 @@
       <?php print $message ?>
     </div>
     <div id="popup-buttons">
-      <button type="button" class="hide-popup-button eu-cookie-compliance-hide-button"><?php print $hide_button; ?></button>
-      <?php if ($find_more_button) : ?>
-        <button type="button" class="find-more-button eu-cookie-compliance-more-button-thank-you" ><?php print $find_more_button; ?></button>
-      <?php endif; ?>
+      <button type="button" class="hide-popup-button"><?php print $hide_button; ?></button>
+      <button type="button" class="find-more-button" ><?php print $find_more_button; ?></button>
     </div>
   </div>
 </div>

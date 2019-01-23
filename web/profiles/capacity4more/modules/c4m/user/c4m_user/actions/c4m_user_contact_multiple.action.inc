@@ -14,12 +14,12 @@
 function c4m_user_contact_multiple_action_info() {
   // If not within OG context, don't declare action.
   if (!$group = c4m_og_current_group()) {
-    return [];
+    return array();
   }
 
   // If not Site Admin, Group Admin or Group Owner, don't declare action.
   if (!c4m_features_og_members_is_power_user($group)) {
-    return [];
+    return array();
   }
 
   // For any user that's not a site admin, don't declare action when group
@@ -27,19 +27,19 @@ function c4m_user_contact_multiple_action_info() {
   if (!c4m_user_is_site_admin()) {
     $wrapper = entity_metadata_wrapper('node', $group);
     if ($wrapper->c4m_og_status->value() == 'archived') {
-      return [];
+      return array();
     }
   }
 
-  return [
-    'c4m_user_contact_multiple_action' => [
+  return array(
+    'c4m_user_contact_multiple_action' => array(
       'type' => 'user',
       'label' => t('Contact'),
       'configurable' => TRUE,
-      'triggers' => ['any'],
-      'behavior' => ['views_property'],
-    ],
-  ];
+      'triggers' => array('any'),
+      'behavior' => array('views_property'),
+    ),
+  );
 }
 
 /**
@@ -54,7 +54,7 @@ function c4m_user_contact_multiple_action_form(array $context, $form_state) {
   if ($form_state['select_all_pages']) {
     $group = c4m_og_current_group();
     // Get ids of all active subscribers of current group.
-    $uids = og_get_group_members_properties($group, [], 'members__' . OG_STATE_ACTIVE, 'node');
+    $uids = og_get_group_members_properties($group, array(), 'members__' . OG_STATE_ACTIVE, 'node');
   }
   else {
     // Get selected members on current page.
@@ -62,7 +62,7 @@ function c4m_user_contact_multiple_action_form(array $context, $form_state) {
   }
 
   $accounts = user_load_multiple($uids);
-  $users_name = [];
+  $users_name = array();
 
   // Create an array of users names for notified subscribers.
   foreach ($accounts as $account) {
@@ -72,45 +72,45 @@ function c4m_user_contact_multiple_action_form(array $context, $form_state) {
     }
   }
 
-  $form['c4m_contact_multiple_from'] = [
+  $form['c4m_contact_multiple_from'] = array(
     '#type' => 'textfield',
     '#title' => t('From'),
     '#description' => t('From address.'),
     '#size' => 30,
     '#default_value' => c4m_message_get_from_field_default_pattern(),
     '#disabled' => TRUE,
-  ];
+  );
 
-  $form['c4m_contact_multiple_to'] = [
+  $form['c4m_contact_multiple_to'] = array(
     '#type' => 'textarea',
     '#title' => t('To'),
     '#default_value' => implode(', ', $users_name),
     '#description' => t('Group members that will receive the email.'),
     '#rows' => 3,
     '#disabled' => TRUE,
-  ];
+  );
 
-  $form['c4m_contact_multiple_subject'] = [
+  $form['c4m_contact_multiple_subject'] = array(
     '#type' => 'textfield',
     '#title' => t('Subject'),
     '#description' => t('Enter mail subject.'),
     '#size' => 10,
     '#required' => TRUE,
-  ];
+  );
 
-  $form['c4m_contact_multiple_body'] = [
+  $form['c4m_contact_multiple_body'] = array(
     '#title' => t('Body'),
     '#description' => t('Enter mail body.'),
     '#type' => 'text_format',
     '#format' => 'filtered_html',
     '#required' => TRUE,
-  ];
+  );
 
-  $form['c4m_contact_multiple_self_copy'] = [
+  $form['c4m_contact_multiple_self_copy'] = array(
     '#type' => 'checkbox',
     '#title' => t('Send me a copy'),
     '#default_value' => FALSE,
-  ];
+  );
 
   return $form;
 }
@@ -140,11 +140,11 @@ function c4m_user_contact_multiple_action_submit($form, $form_state) {
   // We can not use $form_state['redirect'] as VBO ignores it.
   $_GET['destination'] = c4m_og_current_group_purl() . '/members';
 
-  return [
+  return array(
     'subject' => $subject,
     'body' => $body,
     'from' => $from,
-  ];
+  );
 }
 
 /**

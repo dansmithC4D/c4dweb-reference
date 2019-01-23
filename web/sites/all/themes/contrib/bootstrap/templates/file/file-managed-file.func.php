@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Stub file for bootstrap_file_managed_file().
@@ -19,17 +18,14 @@
  *
  * @ingroup theme_functions
  */
-function bootstrap_file_managed_file(array $variables) {
+function bootstrap_file_managed_file($variables) {
   $output = '';
   $element = $variables['element'];
 
   $attributes = array();
-
-  // For Webform use, do not add the id to the wrapper.
-  if (isset($element['#id']) && empty($element['#webform_component'])) {
+  if (isset($element['#id'])) {
     $attributes['id'] = $element['#id'];
   }
-
   if (!empty($element['#attributes']['class'])) {
     $attributes['class'] = (array) $element['#attributes']['class'];
   }

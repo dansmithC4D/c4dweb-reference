@@ -65,6 +65,7 @@ function current_search_current_search_default_items() {
     'advanced' => array(
       'empty_searches' => 0,
     ),
+    'searcher' => current_search_get_default_searcher(),
   );
   $items[$item->name] = $item;
 

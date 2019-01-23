@@ -89,7 +89,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
         editor.addMenuGroup('mediaGroup');
         editor.addMenuItem('mediaConfigureItem', {
-          label: Drupal.settings.media_ckeditor.labels['settings'],
+          label: Drupal.t('Media settings'),
           icon: this.path + 'images/icon.gif',
           command: 'mediaConfigure',
           group: 'mediaGroup'
@@ -106,7 +106,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       // Add the toolbar button.
       editor.ui.addButton( 'Media',
       {
-        label: Drupal.settings.media_ckeditor.labels['add'],
+        label: 'Add media',
         command: 'media'
       });
 
